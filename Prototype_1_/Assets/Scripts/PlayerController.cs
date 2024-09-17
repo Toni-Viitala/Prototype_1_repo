@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public float forwardSpeed = 15;
-    public float turnSpeed = 10;
+    public float turnSpeed = 25;
 
     public float horizontalInput;
     public float forwardInput;
@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour
 
         // Let's move the car forward with:
         transform.Translate(Vector3.forward * Time.deltaTime * forwardInput * forwardSpeed); // Nopeus ilmoitetaan metriä/Sekunnissa
-        transform.Translate(Vector3.right * Time.deltaTime * turnSpeed * horizontalInput);
+        transform.Rotate(Vector3.up, turnSpeed * horizontalInput * Time.deltaTime);
 
     }
 }
