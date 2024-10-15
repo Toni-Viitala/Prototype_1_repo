@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class SpawnManager_3 : MonoBehaviour
 {
+    private PlayerController_3 playerControllerScript;
+
     public GameObject obstaclePrefab;
     public Vector3 spawnPosition = new Vector3(25,0,0);
 
@@ -13,7 +15,9 @@ public class SpawnManager_3 : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        playerControllerScript = GameObject.Find("Player").GetComponent<PlayerController_3>();
         InvokeRepeating("SpawnObstacle", startDelay, repeatRate);
+        
     }
 
     // Update is called once per frame
@@ -24,6 +28,10 @@ public class SpawnManager_3 : MonoBehaviour
 
     void SpawnObstacle()
     {
-        Instantiate(obstaclePrefab, spawnPosition, obstaclePrefab.transform.rotation);
+        if (playerControllerScript.gameOver == false)
+        {
+            Instantiate(obstaclePrefab, spawnPosition, obstaclePrefab.transform.rotation);
+        }
+        
     }
 }
