@@ -1,12 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController_3 : MonoBehaviour
-{
+{   
+    public StatsManager statsManager;
+    public GameObject gameOverPanel;
+
+
     private Rigidbody playerRb;
     private Animator playerAnim;
     private AudioSource playerAudio;
+
+    // We take the position and rotation of the player in Start() for SpawnManager.
+    public Vector3 initialPosition;
+    public Quaternion initialRotation;
 
     public ParticleSystem explosionParticle;
     public ParticleSystem dirtParticle;
@@ -16,16 +25,26 @@ public class PlayerController_3 : MonoBehaviour
 
     public float jumpForce;
     public float gravityModifier;
+
+
     public bool isOnGround = true;
+
+    public bool restart = false;
     public bool gameOver = false;
 
     // Start is called before the first frame update
     void Start()
     {
+        Time.timeScale = 0; // When game starts we set the time to be zero. (Since all the components are loaded under the canvas.) 
+                            // The game is then started from a button which uses the GameStart()-method which sets the time to be 1.
+
         playerAudio = GetComponent<AudioSource>();
         playerAnim = GetComponent<Animator>();
         playerRb = GetComponent<Rigidbody>();
         Physics.gravity *= gravityModifier;
+
+        initialPosition = transform.position;
+        initialRotation = transform.rotation;
     }
 
     // Update is called once per frame
@@ -43,6 +62,19 @@ public class PlayerController_3 : MonoBehaviour
         }
     }
 
+    public void GameStart()     // GameStart() is called in UI by the StartButton (OnClickEvent)
+    {
+        Time.timeScale = 1;
+    }
+
+    public void QuitGame()      // QuitGame() is called in UI by the QuitButton (OnClickEvent)
+    {
+        Debug.Log("QUIT!");
+
+        //Application.Quit();     // Not used since the game is not expected to be built.
+    }
+
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Ground"))
@@ -50,18 +82,50 @@ public class PlayerController_3 : MonoBehaviour
             isOnGround = true;
             dirtParticle.Play();
         }
-        else if (collision.gameObject.CompareTag("Obstacle"))
+
+        if (collision.gameObject.CompareTag("WineScore"))
         {
-            gameOver = true;
-            Debug.Log("Game over!");
+            Debug.Log("Got Wine!");
+        }
+
+        if (collision.gameObject.CompareTag("Obstacle")  && statsManager.playerLives > 1)
+        {
+
+            Debug.Log("Player hit an obstacle");
+
+            statsManager.playerLives --;
 
             playerAudio.PlayOneShot(crashSound, 1f);
+            explosionParticle.Play(); 
+        }
 
+
+        else if (collision.gameObject.CompareTag("Obstacle") && statsManager.playerLives == 1)
+        {
+            Debug.Log("Game over!");
+            gameOver = true;
+
+            playerAudio.PlayOneShot(crashSound, 1f);
             dirtParticle.Stop();
             explosionParticle.Play();
-
             playerAnim.SetBool("Death_b", true);
-            playerAnim.SetInteger("DeathType_int", 1);
+            playerAnim.SetInteger("DeathType_int", 1);  
+
+            if(gameOver == true)
+            {
+                Invoke("activateGameOverPanel", 5);
+            }
         }
     }
+    public void activateGameOverPanel()
+    {
+        gameOverPanel.SetActive(true); 
+    }
+
+    public void ReloadCurrentScene()    // This method is used by the ReturnButton (OnClickEvent) in the GameOverPanel, restarting the scene.
+    {
+        string currentSceneName = SceneManager.GetActiveScene().name;
+        SceneManager.LoadScene(currentSceneName);
+    }
+
 }

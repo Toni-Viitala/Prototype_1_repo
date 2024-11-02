@@ -7,7 +7,12 @@ public class SpawnManager_3 : MonoBehaviour
     private PlayerController_3 playerControllerScript;
 
     public GameObject obstaclePrefab;
-    public Vector3 spawnPosition = new Vector3(25,0,0);
+    public GameObject oilPrefab;
+    public GameObject playerPrefab;
+    public Vector3 oilPosition = new Vector3(25,0,0);
+
+    public int playerSpawnDelay = 3;
+    
 
     private float startDelay = 2;
     private float repeatRate = 2;
@@ -17,52 +22,28 @@ public class SpawnManager_3 : MonoBehaviour
     {
         playerControllerScript = GameObject.Find("Player").GetComponent<PlayerController_3>();
         InvokeRepeating("SpawnObstacle", startDelay, repeatRate);
-        
+
+        InvokeRepeating("SpawnOil", startDelay, repeatRate);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+    
     }
 
     void SpawnObstacle()
     {
         if (playerControllerScript.gameOver == false)
         {
-            Instantiate(obstaclePrefab, spawnPosition, obstaclePrefab.transform.rotation);
-            StartCoroutine(FadeIn(obstaclePrefab));
-
+            Instantiate(obstaclePrefab, oilPosition, obstaclePrefab.transform.rotation);
+            //StartCoroutine(FadeIn(obstaclePrefab));
         }
     }
 
-
-
-    IEnumerator FadeIn(GameObject obstacle)
+    void SpawnOil()
     {
-        // Get the Renderer component of the instantiated object
-        Renderer obstacleRenderer = obstacle.GetComponent<Renderer>(); // Get the Renderer, not Color
-
-        // Set the initial color to transparent (alpha = 0)
-        Color obstacleColor = obstacleRenderer.material.color;
-        obstacleColor.a = 0f; // Fully transparent
-        obstacleRenderer.material.color = obstacleColor;
-
-        // Gradually increase the alpha value to make the object visible
-        float fadeDuration = 2f; // Duration of the fade-in effect
-        float elapsedTime = 0f;
-
-        while (elapsedTime < fadeDuration)
-        {
-            elapsedTime += Time.deltaTime;
-            // Interpolate the alpha value over time
-            obstacleColor.a = Mathf.Lerp(0f, 1f, elapsedTime / fadeDuration);
-            obstacleRenderer.material.color = obstacleColor;
-            yield return null; // Wait for the next frame
-        }
-
-        // Ensure the final alpha is set to 1 (fully visible)
-        obstacleColor.a = 1f;
-        obstacleRenderer.material.color = obstacleColor;
+        Vector3 spawnOilPosition = new Vector3(35, Random.Range(0.0f, 8.5f), 0);
+        Instantiate(oilPrefab, spawnOilPosition, obstaclePrefab.transform.rotation);
     }
 }
