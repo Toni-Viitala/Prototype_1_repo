@@ -9,35 +9,38 @@ public class SpawnManager_3 : MonoBehaviour
     public GameObject obstaclePrefab;
     public GameObject oilPrefab;
     public GameObject playerPrefab;
-    public Vector3 oilPosition = new Vector3(25,0,0);
+    public Vector3 obstaclePosition = new Vector3(50,0,0);
 
     public int playerSpawnDelay = 3;
     
 
     private float startDelay = 2;
-    private float repeatRate = 2;
+    public float repeatRate = 2;
+    float randomSpawn = 2f;
 
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("Random spawn is START = " + randomSpawn);
+
         playerControllerScript = GameObject.Find("Player").GetComponent<PlayerController_3>();
-        InvokeRepeating("SpawnObstacle", startDelay, repeatRate);
+
+        StartCoroutine(SpawnObstacle());
 
         InvokeRepeating("SpawnOil", startDelay, repeatRate);
     }
 
-    // Update is called once per frame
-    void Update()
+   
+    IEnumerator SpawnObstacle()
     {
-    
-    }
-
-    void SpawnObstacle()
-    {
-        if (playerControllerScript.gameOver == false)
+    while (!playerControllerScript.gameOver)  // Continue spawning until the game is over
         {
-            Instantiate(obstaclePrefab, oilPosition, obstaclePrefab.transform.rotation);
-            //StartCoroutine(FadeIn(obstaclePrefab));
+            float randomSpawn = Random.Range(1.5f, 4);
+            Debug.Log("Random spawn is = " + randomSpawn);
+
+            Instantiate(obstaclePrefab, obstaclePosition, obstaclePrefab.transform.rotation);
+
+            yield return new WaitForSeconds(randomSpawn);  // Wait for randomSpawn seconds before spawning the next obstacle
         }
     }
 

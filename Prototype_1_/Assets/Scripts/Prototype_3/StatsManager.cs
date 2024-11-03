@@ -5,7 +5,7 @@ public class StatsManager : MonoBehaviour
 {
     public PlayerController_3 playerController;
 
-    public static int score = 0; // Score variable to keep track of the player's score
+    public int score = 0; // Score variable to keep track of the player's score
     public int playerLives = 3;
 
     public TextMeshProUGUI scoreText; // Reference to the TextMesh Pro UI component

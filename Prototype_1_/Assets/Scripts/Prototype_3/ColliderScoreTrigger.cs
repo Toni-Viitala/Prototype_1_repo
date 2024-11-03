@@ -1,14 +1,31 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ColliderScoreTrigger : MonoBehaviour
 {
-    private void OnTriggerEnter(Collider other)
-{
-    if (other.CompareTag("Player"))
+    public StatsManager statsManager;
+    public GameObject barrel;
+    private void Start()
     {
-        //Debug.Log("Trigger entered by Player!");
-        StatsManager.score++;
+        statsManager = FindObjectOfType<StatsManager>();
+        if (statsManager == null)
+        {
+            Debug.LogError("StatsManager not found in the scene!");
+        }
     }
-}
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            statsManager.score++;
+        }
+        if (other.CompareTag("Player"))
+        {
+            Destroy(barrel);
+        }
+        
+    }
 
 }
