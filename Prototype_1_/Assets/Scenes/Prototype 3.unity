@@ -1913,7 +1913,6 @@ MonoBehaviour:
   currentLevel: 1
   descentSpeed: 100
   resetThreshold: -900
-  amountOfScoreNeededToChangeLevel: 1
 --- !u!114 &1559694320 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5898140740853036590, guid: 0deeab26bbd50a54ab60597ba524c66a, type: 3}
@@ -2255,7 +2254,6 @@ MonoBehaviour:
   currentLevel: 1
   descentSpeed: 800
   resetThreshold: -900
-  amountOfScoreNeededToChangeLevel: 5
 --- !u!1 &1988857663
 GameObject:
   m_ObjectHideFlags: 0
