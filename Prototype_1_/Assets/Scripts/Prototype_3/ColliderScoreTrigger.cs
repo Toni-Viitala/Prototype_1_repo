@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ColliderScoreTrigger : MonoBehaviour
+public class ColliderScoreTrigger : MonoBehaviour   // Add this code to Objects/Prefabs that add to the player score. (In StatsManager.score)
 {
     public StatsManager statsManager;
     public GameObject barrel;
@@ -15,9 +15,9 @@ public class ColliderScoreTrigger : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other) // If player collides these we add points to statsmanager, if it is a barrel, we destroy it.
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player"))     
         {
             statsManager.score++;
         }

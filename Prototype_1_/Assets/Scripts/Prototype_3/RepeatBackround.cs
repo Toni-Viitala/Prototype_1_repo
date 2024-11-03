@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RepeatBackround : MonoBehaviour
+public class RepeatBackround : MonoBehaviour    // We repeat the backround seamlessly.
 {
     private Vector3 startPosition;
     private float repeatWidht;

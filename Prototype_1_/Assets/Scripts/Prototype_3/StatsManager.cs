@@ -1,7 +1,7 @@
 using UnityEngine;
 using TMPro; // Include the TextMesh Pro namespace
 
-public class StatsManager : MonoBehaviour
+public class StatsManager : MonoBehaviour       // StatsManager takes care of printing the score and player lives - texts.
 {
     public PlayerController_3 playerController;
 
@@ -10,6 +10,7 @@ public class StatsManager : MonoBehaviour
 
     public TextMeshProUGUI scoreText; // Reference to the TextMesh Pro UI component
     public TextMeshProUGUI livesText;
+   
 
     void Update()
     {
@@ -23,11 +24,4 @@ public class StatsManager : MonoBehaviour
         }
 
     }
-
-    public void AddScore(int amount)
-    {
-        score += amount; // Increase the score by the specified amount
-    }
-
-    
 }

@@ -32,7 +32,7 @@ public class PlayerController_3 : MonoBehaviour
     public bool restart = false;
     public bool gameOver = false;
 
-    // Start is called before the first frame update
+
     void Start()
     {
         Time.timeScale = 0; // When game starts we set the time to be zero. (Since all the components are loaded under the canvas.) 
@@ -47,8 +47,8 @@ public class PlayerController_3 : MonoBehaviour
         initialRotation = transform.rotation;
     }
 
-    // Update is called once per frame
-    void Update()
+   
+    void Update()  // All of the funcionality inside the Update() were made during the tutorials.
     {
         if (Input.GetKeyDown(KeyCode.Space) &&  isOnGround && !gameOver)
         {
@@ -83,11 +83,6 @@ public class PlayerController_3 : MonoBehaviour
             dirtParticle.Play();
         }
 
-        if (collision.gameObject.CompareTag("WineScore"))
-        {
-            Debug.Log("Got Wine!");
-        }
-
         if (collision.gameObject.CompareTag("Obstacle")  && statsManager.playerLives > 1)
         {
 
@@ -102,6 +97,8 @@ public class PlayerController_3 : MonoBehaviour
 
         else if (collision.gameObject.CompareTag("Obstacle") && statsManager.playerLives == 1)
         {
+            statsManager.playerLives= 0;
+
             Debug.Log("Game over!");
             gameOver = true;
 
@@ -111,13 +108,13 @@ public class PlayerController_3 : MonoBehaviour
             playerAnim.SetBool("Death_b", true);
             playerAnim.SetInteger("DeathType_int", 1);  
 
-            if(gameOver == true)
+            if(gameOver == true)    // We wait for 5 seconds after the gameOver condition is true for the animations to play.
             {
-                Invoke("activateGameOverPanel", 5);
+                Invoke("activateGameOverPanel", 5); // Then invoke.
             }
         }
     }
-    public void activateGameOverPanel()
+    public void activateGameOverPanel() // For invocation if gameOver = true.
     {
         gameOverPanel.SetActive(true); 
     }
